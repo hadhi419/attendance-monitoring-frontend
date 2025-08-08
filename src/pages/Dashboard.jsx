@@ -25,7 +25,7 @@ const Dashboard = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(
-        `https://backend-repo-silent-butterfly-7738.fly.dev/courses/getCoursesByStudentId/${registrationNumber}`,
+        `https://backend-repo-snowy-water-3246.fly.dev/courses/getCoursesByStudentId/${registrationNumber}`,
         {
           headers: {
             'Authorization': `Bearer ${token}`,

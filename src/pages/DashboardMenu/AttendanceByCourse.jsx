@@ -27,7 +27,7 @@ const AttendanceByCourse = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(
-        `https://backend-repo-silent-butterfly-7738.fly.dev/attendance/course/${courseCode}/by-date`,
+        `https://backend-repo-snowy-water-3246.fly.dev/attendance/course/${courseCode}/by-date`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
