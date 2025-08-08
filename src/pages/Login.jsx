@@ -23,10 +23,10 @@ const Login = ({ setIsAuthenticated }) => {
       return;
     }
 
-    if (!captchaValue) {
-      alert("Please complete the CAPTCHA");
-      return;
-    }
+    // if (!captchaValue) {
+    //   alert("Please complete the CAPTCHA");
+    //   return;
+    // }
 
     try {
       const response = await fetch('http://localhost:8080/api/login', {
@@ -80,12 +80,12 @@ const Login = ({ setIsAuthenticated }) => {
         <input type="email" name="email" placeholder="Email" className="w-full mb-3 p-2 border rounded" />
         <input type="password" name="password" placeholder="Password" className="w-full mb-4 p-2 border rounded" />
         
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <ReCAPTCHA
             sitekey={sitekey}
             onChange={handleCaptchaChange}
           />
-        </div>
+        </div> */}
 
         <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded hover:bg-green-700 hover:rounded-xl transition-all duration-300">
           Login
