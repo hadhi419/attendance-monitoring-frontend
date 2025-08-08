@@ -20,7 +20,7 @@ const RegisterUser = () => {
     setMessage('');
 
     try {
-      await axios.post('http://localhost:8080/admin/addUser', user);
+      await axios.post('https://backend-repo-snowy-surf-5449.fly.dev/admin/addUser', user);
       setMessage('✅ Student registered successfully.');
       setUser({ email: '', password: '', role: 'student' });
     } catch (err) {

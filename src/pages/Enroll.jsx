@@ -45,7 +45,7 @@ const Enroll = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.post(
-          "http://localhost:8080/enrollments/enroll",
+          "https://backend-repo-snowy-surf-5449.fly.dev/enrollments/enroll",
           students,
           {
             headers: {

@@ -26,7 +26,7 @@ const Record = () => {
 
       const token = localStorage.getItem('token');
       console.log("Token:", token);
-      const response = await axios.get(`http://localhost:8080/students/course/${courseCode}`,
+      const response = await axios.get(`https://backend-repo-snowy-surf-5449.fly.dev/students/course/${courseCode}`,
         {
               headers: {
                 'Authorization': `Bearer ${token}`,
