@@ -26,7 +26,7 @@ const Dashboard = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(
-        `https://backend-repo-snowy-surf-5449.fly.dev/courses/getCoursesByStudentId/${registrationNumber}`,
+        `https://backend-repo-silent-butterfly-7738.fly.dev/courses/getCoursesByStudentId/${registrationNumber}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -48,7 +48,7 @@ const Dashboard = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(
-        `https://backend-repo-snowy-surf-5449.fly.dev/attendance/student/${registrationNumber}/course/${courseCode}`,
+        `https://backend-repo-silent-butterfly-7738.fly.dev/attendance/student/${registrationNumber}/course/${courseCode}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

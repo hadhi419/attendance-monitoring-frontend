@@ -29,7 +29,7 @@ const Login = ({ setIsAuthenticated }) => {
     // }
 
     try {
-      const response = await fetch('https://backend-repo-snowy-surf-5449.fly.dev/api/login', {
+      const response = await fetch('https://backend-repo-silent-butterfly-7738.fly.dev/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: email, password, captcha: captchaValue }),
