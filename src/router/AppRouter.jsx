@@ -13,7 +13,7 @@ import ByDate from '../pages/DashboardMenu/ByDate';
 import AttendanceByCourse from '../pages/DashboardMenu/AttendanceByCourse';
 import AddStudent from '../pages/AdminMenu/AddStudent';
 import AddAdmin from '../pages/AdminMenu/AddAdmin';
-import Enroll from '../pages/enroll';
+import Enroll from '../pages/Enroll';
 
 const AppRouter = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
