@@ -25,11 +25,6 @@ const Login = ({ setIsAuthenticated }) => {
       return;
     }
 
-    if (!captchaValue) {
-      alert("Please complete the CAPTCHA");
-      return;
-    }
-
     setLoading(true);
 
     try {
