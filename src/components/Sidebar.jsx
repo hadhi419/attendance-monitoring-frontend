@@ -1,24 +1,19 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiMenu, FiX } from 'react-icons/fi';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { FiMenu, FiX } from 'react-icons/fi';
 
-const Sidebar = ({ setIsAuthenticated }) => {
-  const [collapsed, setCollapsed] = useState(false);
+const Sidebar = ({ collapsed, setCollapsed, setIsAuthenticated }) => {
   const [dashboardOpen, setDashboardOpen] = useState(false);
-  const [adminOpen, setadminOpen] = useState(false);
+  const [adminOpen, setAdminOpen] = useState(false);
   const navigate = useNavigate();
-
-  const toggleSidebar = () => {
-    setCollapsed(!collapsed);
-  };
 
   const toggleDashboardMenu = () => {
     setDashboardOpen(!dashboardOpen);
   };
 
   const toggleAdminMenu = () => {
-    setadminOpen(!adminOpen);
+    setAdminOpen(!adminOpen);
   };
 
   const handleLogout = (e) => {
@@ -30,22 +25,37 @@ const Sidebar = ({ setIsAuthenticated }) => {
 
   return (
     <aside
-      className={`bg-cyan-800 text-white p-4 transition-all duration-300 ${
-        collapsed ? 'w-16' : 'w-64'
-      }`}
+      className={`
+        bg-cyan-800 text-white p-4 transition-all duration-300
+        fixed left-0 z-40
+        ${collapsed ? 'w-14' : 'w-full md:w-64'}
+        md:relative
+        flex flex-col
+        top-18  md:top-0    
+        h-[calc(100vh-20px)] md:h-full  
+      `}
     >
-      <div className="flex items-center justify-between mb-4">
-        {!collapsed && <h2 className="text-2xl font-bold">Admin Panel</h2>}
-        <button onClick={toggleSidebar} className="text-white p-2">
+      {/* Header with toggle button visible only on md+ */}
+      <div className="flex items-center justify-between mb-4 flex-shrink-0">
+        {!collapsed && <h2 className="text-lg font-bold md:text-2xl">Admin</h2>}
+
+        {/* Toggle button for md+ screens */}
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          className="text-white hidden md:inline-block"
+          aria-label="Toggle sidebar"
+        >
           {collapsed ? <FiMenu size={20} /> : <FiX size={20} />}
         </button>
       </div>
 
+      {/* Navigation: show only if not collapsed */}
       {!collapsed && (
-        <nav className="flex flex-col gap-3">
+        <nav className="flex-1 overflow-y-auto flex flex-col gap-3 text-sm md:text-lg">
           <Link to="/home" className="hover:underline">
             Home Page
           </Link>
+
           <div>
             <button
               onClick={toggleDashboardMenu}
@@ -93,15 +103,17 @@ const Sidebar = ({ setIsAuthenticated }) => {
             Enroll Students
           </Link>
 
-
           <Link to="/record" className="hover:underline">
             Record
           </Link>
 
-          {/* Logout as a Link that triggers logout */}
-          {/* <Link to="#" className="hover:underline" onClick={handleLogout}>
+          {/* Logout button */}
+          <button
+            onClick={handleLogout}
+            className="mt-auto text-left text-blue-300 hover:underline"
+          >
             Logout
-          </Link> */}
+          </button>
         </nav>
       )}
     </aside>

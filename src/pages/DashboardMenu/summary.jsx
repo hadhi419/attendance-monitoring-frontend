@@ -54,6 +54,7 @@ const Dashboard = () => {
         }
       );
       setResult(response.data);
+      setError(null); // Clear error on successful fetch
     } catch (err) {
       console.error('Error fetching attendance:', err);
       setError(err);
@@ -71,22 +72,23 @@ const Dashboard = () => {
 
   return (
     <motion.div
-      className="p-4 sm:p-6"
+      className="p-4 sm:p-6 max-w-screen-lg mx-auto"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
     >
       {/* Registration Input */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-4">
+      <div className="flex flex-col sm:flex-row gap-4 mb-6">
         <input
           type="text"
           placeholder="Registration Number"
-          className="flex-1 border border-gray-300 rounded px-3 py-2 outline-none"
+          className="flex-1 border border-gray-300 rounded px-3 py-2 outline-none focus:ring-2 focus:ring-cyan-600"
           value={registrationNumber}
           onChange={(e) => setRegistrationNumber(e.target.value)}
+          aria-label="Registration Number"
         />
         <button
-          className="bg-cyan-500 text-white px-4 py-2 rounded hover:bg-cyan-600 transition-all duration-300"
+          className="bg-cyan-500 text-white px-4 py-2 rounded hover:bg-cyan-600 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
           onClick={fetchCourses}
           disabled={loading}
         >
@@ -94,16 +96,16 @@ const Dashboard = () => {
         </button>
       </div>
 
-      {/* Error */}
-      {error && (
-        <p className="text-red-500 font-medium mb-4 max-w-full break-words">
+      {/* Error - only show if error exists AND no summary data */}
+      {error && !result && courses.length === 0 && (
+        <p className="text-red-500 font-medium mb-4 max-w-full break-words text-center sm:text-left">
           Error: {error.status === 403 ? 'No Summary Found.' : error.message}
         </p>
       )}
 
       {/* Main Content */}
       {courses.length > 0 && (
-        <div className="flex flex-col gap-6 lg:flex-row lg:gap-4 mt-6 w-full">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-4 mt-6 w-full">
           {/* Attendance Chart */}
           <AnimatePresence>
             {result && (
@@ -125,7 +127,7 @@ const Dashboard = () => {
 
           {/* Course List Buttons */}
           <motion.div
-            className="rounded-lg p-4 pt-6 w-full lg:w-2/3"
+            className="rounded-lg p-4 pt-6 w-full lg:w-2/3 max-h-[450px] overflow-y-auto"
             initial={false}
             animate={{
               width: result ? '100%' : '100%',
@@ -134,7 +136,7 @@ const Dashboard = () => {
             style={{ minWidth: 0 }}
             layout
           >
-            <div className="space-y-3 max-h-[450px] overflow-y-auto">
+            <div className="space-y-3">
               {courses.map((course, index) => (
                 <button
                   key={index}
@@ -145,6 +147,7 @@ const Dashboard = () => {
                         : 'bg-gray-100 text-gray-800 hover:bg-green-500 hover:text-white'
                     }`}
                   onClick={() => fetchData(registrationNumber, course.course_code)}
+                  aria-pressed={selectedCourse === course.course_code}
                 >
                   {course.course_code} - {course.course_name}
                 </button>

@@ -30,9 +30,10 @@ const RegisterUser = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 bg-white p-6 rounded-lg shadow-lg ">
-      {/* <h1 className="text-3xl font-bold text-center text-cyan-900 mb-6">Admin Panel</h1> */}
-      <h2 className="text-xl font-semibold mb-4 text-gray-700">Register a New Student as an User</h2>
+    <div className="max-w-md w-full mx-auto mt-6 sm:mt-10 bg-white p-4 sm:p-6 rounded-lg shadow-lg">
+      <h2 className="text-lg sm:text-xl font-semibold mb-4 text-gray-700 text-center sm:text-left">
+        Register a New Student as an User
+      </h2>
 
       {message && (
         <p className="mb-4 p-2 text-sm text-center rounded bg-gray-100 text-gray-800 border">
@@ -80,7 +81,7 @@ const RegisterUser = () => {
             id="role"
             value={user.role}
             onChange={handleChange}
-            className="mt-1 w-full p-2 border rounded bg-white"
+            className="mt-1 w-full p-2 border rounded bg-white cursor-not-allowed"
             disabled
           >
             <option value="student">Student</option>

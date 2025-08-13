@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 const Enroll = () => {
   const [file, setFile] = useState(null);
-  const [parsedStudents, setParsedStudents] = useState([]);  
+  const [parsedStudents, setParsedStudents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState(null);
@@ -13,13 +13,15 @@ const Enroll = () => {
   const [failMsg, setFailMsg] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
-
   const handleFileChange = (e) => {
     const uploadedFile = e.target.files[0];
     setFile(uploadedFile);
     setMessage("");
     setError(null);
-    setParsedStudents([]);  
+    setParsedStudents([]);
+    setSuccessMsg("");
+    setFailMsg("");
+    setSubmitted(false);
   };
 
   const parseTSV = async () => {
@@ -31,16 +33,18 @@ const Enroll = () => {
     const reader = new FileReader();
     reader.onload = async (event) => {
       const contents = event.target.result;
-      const lines = contents.trim().split("\n").slice(1);
+      const lines = contents.trim().split("\n").slice(1); // skip header line
       const students = lines.map((line) => {
         const [registration_number, course_code] = line.trim().split("\t");
         return { registration_number, course_code };
       });
 
-      setParsedStudents(students);  // <-- store parsed data to show in table
+      setParsedStudents(students);
       setLoading(true);
       setMessage("");
       setError(null);
+      setSuccessMsg("");
+      setFailMsg("");
 
       try {
         const token = localStorage.getItem("token");
@@ -54,9 +58,9 @@ const Enroll = () => {
             },
           }
         );
-        setMessage(response.data.message);
-        setSuccessMsg("Successful enrollments - " + response.data.successful);
-        setFailMsg("Failed enrollments - " + response.data.skipped_duplicates + " (Caused by duplicate entries)\n");
+        setMessage(response.data.message || "Enrollment completed.");
+        setSuccessMsg("Successful enrollments - " + (response.data.successful ?? 0));
+        setFailMsg("Failed enrollments - " + (response.data.skipped_duplicates ?? 0) + " (Caused by duplicate entries)");
       } catch (err) {
         console.error(err);
         setError("Bulk enrollment failed. Please check the TSV format and server.");
@@ -64,89 +68,85 @@ const Enroll = () => {
         setLoading(false);
       }
     };
+
     setSubmitted(true);
     reader.readAsText(file);
   };
 
   return (
-    <div className="p-6">
-      <div className="flex flex-col sm:flex-row gap-4 mb-4">
+    <div className="p-6 max-w-screen-md mx-auto">
+      {/* File Upload & Button */}
+      <div className="flex flex-col sm:flex-row gap-4 mb-6">
         <input
           type="file"
           accept=".tsv"
-          className="flex-1 border bg-gray-200 text-green-700 font-medium border-gray-300 rounded px-3 py-2 outline-none"
+          className="flex-1 border border-gray-300 rounded px-3 py-2 bg-gray-50 text-gray-700 font-medium outline-none
+            focus:ring-2 focus:ring-cyan-600"
           onChange={handleFileChange}
+          aria-label="Upload TSV file"
         />
-
-        <button 
+        <button
           onClick={parseTSV}
-          className="bg-cyan-500 text-white px-4 py-2 rounded hover:bg-cyan-600 transition-all duration-300"
+          className="bg-cyan-500 text-white px-5 py-2 rounded hover:bg-cyan-600 transition duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
+          disabled={loading || !file}
+          aria-disabled={loading || !file}
         >
-          Enroll Students
+          {loading ? <ClipLoader color="#fff" size={20} /> : 'Enroll Students'}
         </button>
       </div>
 
+      {/* Parsed Students Table */}
+      {parsedStudents.length > 0 && (
+        <div className="max-w-full mb-6 overflow-x-auto rounded-lg border border-gray-300 shadow-sm">
+          {/* Table Header */}
+          <div className="grid grid-cols-2 bg-gray-100 border-b border-gray-300 text-gray-700 font-semibold px-4 py-2">
+            <div>Registration Number</div>
+            <div>Course Code</div>
+          </div>
 
-
-
-        {parsedStudents.length > 0 && (
-        <div className="max-w-full mb-4 pt-6">
-            {/* Header */}
-            <div className="flex border-b border-gray-300 pb-2 mb-2 font-semibold text-gray-700">
-            <div className="flex-1">Registration Number</div>
-            <div className="flex-1">Course Code</div>
-            </div>
-
-            {/* Rows */}
-            <div className="flex flex-col space-y-2">
+          {/* Table Rows */}
+          <div>
             {parsedStudents.map((student, idx) => (
-                <div
+              <div
                 key={idx}
-                className="flex items-center p-2 border border-gray-200 rounded-xl shadow-sm"
-                style={{ backgroundColor: idx % 2 === 0 ? "#f9fafb" : "white" }} // alternate row bg
-                >
-                <div className="flex-1">{student.registration_number}</div>
-                <div className="flex-1">{student.course_code}</div>
-                </div>
+                className={`grid grid-cols-2 px-4 py-2 items-center ${
+                  idx % 2 === 0 ? "bg-white" : "bg-gray-50"
+                }`}
+              >
+                <div className="truncate">{student.registration_number}</div>
+                <div className="truncate">{student.course_code}</div>
+              </div>
             ))}
-            </div>
-        </div>
-        )}
-
-
-      {loading && (
-        <div className="flex justify-center my-4">
-          <ClipLoader color="#06b6d4" size={35} />
+          </div>
         </div>
       )}
 
+      {/* Messages */}
+      {(message || successMsg || failMsg || error) && (
+        <div className="mb-6 space-y-2">
+          {message && <p className="text-green-700 font-semibold">{message}</p>}
+          {successMsg && <p className="text-green-600 whitespace-pre-wrap">{successMsg}</p>}
+          {failMsg && <p className="text-red-600 whitespace-pre-wrap">{failMsg}</p>}
+          {error && <p className="text-red-500 font-medium">{error}</p>}
+        </div>
+      )}
 
-    {(message || successMsg || failMsg || error) && (
-    <div>
-        {/* {message && <pre className="text-green-600 mb-2">{message}</pre>}
-        {successMsg && <pre className="text-green-600 mb-2">{successMsg}</pre>} */}
-        {failMsg && <pre className="text-red-600 mb-2 justify-self-end mr-7">{failMsg}</pre>}
-        {error && <pre className="text-red-500">{error}</pre>}
-    </div>
-    )}
-
-
-    {!submitted && (
-    <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="bg-gray-100 p-4 rounded mt-6"
-    >
-        <h2 className="text-lg font-semibold mb-2">TSV Format:</h2>
-        <pre className="text-sm text-gray-700">
-        registrNum {"\t"} course_code {"\t"}
-        {"\n"}2021ICT006 {"\t"} ACU2212
-        </pre>
-    </motion.div>
-    )}
-
-
+      {/* TSV Format Instructions */}
+      {!submitted && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="bg-gray-100 p-4 rounded"
+          aria-live="polite"
+        >
+          <h2 className="text-lg font-semibold mb-2">TSV Format:</h2>
+          <pre className="text-sm text-gray-700 whitespace-pre-wrap">
+registrNum {"\t"} course_code{"\n"}
+2021ICT006 {"\t"} ACU2212
+          </pre>
+        </motion.div>
+      )}
     </div>
   );
 };

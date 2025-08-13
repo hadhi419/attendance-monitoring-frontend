@@ -43,7 +43,7 @@ const AttendanceSummaryChart = ({ data }) => {
 
   return (
     <>
-    <div className="bg-green-400 border-4  p-4 flex flex-col w-72 h-78  rounded-3xl txt  items-center justify-center">
+    <div className=" border-4  p-4 flex flex-col w-72 h-78  rounded-3xl items-center justify-center">
           <h2 className="text-black">{data.course_code}</h2>
   <div className="p-4 border rounded-2xl shadow-md bg-white w-72 h-80 max-w-md">
     <Pie data={chartData} options={options} />

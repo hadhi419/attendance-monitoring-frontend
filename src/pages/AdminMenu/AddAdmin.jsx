@@ -30,19 +30,34 @@ const RegisterUser = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 bg-white p-6 rounded-lg shadow-lg ">
-      {/* <h1 className="text-3xl font-bold text-center text-cyan-900 mb-6">Admin Panel</h1> */}
-      <h2 className="text-xl font-semibold mb-4 text-gray-700">Add New Admin</h2>
+    <div className="max-w-md mx-auto mt-10 bg-white p-6 rounded-lg shadow-lg
+                    sm:max-w-lg sm:p-8
+                    md:max-w-xl md:p-10
+                    lg:max-w-2xl
+                   ">
+      {/* Heading */}
+      <h2 className="text-xl font-semibold mb-4 text-gray-700
+                     sm:text-2xl md:text-3xl">
+        Add New Admin
+      </h2>
 
+      {/* Message */}
       {message && (
-        <p className="mb-4 p-2 text-sm text-center rounded bg-gray-100 text-gray-800 border">
+        <p className="mb-4 p-2 text-sm text-center rounded bg-gray-100 text-gray-800 border
+                      sm:text-base">
           {message}
         </p>
       )}
 
+      {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Email */}
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-700
+                       sm:text-base"
+          >
             Email Address
           </label>
           <input
@@ -51,13 +66,19 @@ const RegisterUser = () => {
             id="email"
             value={user.email}
             onChange={handleChange}
-            className="mt-1 w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-cyan-600"
+            className="mt-1 w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-cyan-600
+                       sm:p-3 sm:text-base"
             required
           />
         </div>
 
+        {/* Password */}
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-gray-700
+                       sm:text-base"
+          >
             Password
           </label>
           <input
@@ -66,13 +87,19 @@ const RegisterUser = () => {
             id="password"
             value={user.password}
             onChange={handleChange}
-            className="mt-1 w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-cyan-600"
+            className="mt-1 w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-cyan-600
+                       sm:p-3 sm:text-base"
             required
           />
         </div>
 
+        {/* Role */}
         <div>
-          <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="role"
+            className="block text-sm font-medium text-gray-700
+                       sm:text-base"
+          >
             Role
           </label>
           <select
@@ -80,16 +107,20 @@ const RegisterUser = () => {
             id="role"
             value={user.role}
             onChange={handleChange}
-            className="mt-1 w-full p-2 border rounded bg-white"
+            className="mt-1 w-full p-2 border rounded bg-white
+                       sm:p-3 sm:text-base"
             disabled
           >
             <option value="admin">Admin</option>
           </select>
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-cyan-700 text-white py-2 rounded hover:bg-green-800 hover:rounded-xl transition-all  duration-300"
+          className="w-full bg-cyan-700 text-white py-2 rounded hover:bg-green-800 hover:rounded-xl
+                     transition-all duration-300
+                     sm:py-3 sm:text-lg"
         >
           Register Student
         </button>

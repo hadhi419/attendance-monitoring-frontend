@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 const Record = () => {
   const [courseCode, setCourseCode] = useState("");
   const [students, setStudents] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date()); // 🟡 Date
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -23,20 +23,13 @@ const Record = () => {
     setError(null);
 
     try {
-
       const token = localStorage.getItem('token');
-      console.log("Token:", token);
-      const response = await axios.get(`https://backend-repo-snowy-water-3246.fly.dev/students/course/${courseCode}`,
-        {
-              headers: {
-                'Authorization': `Bearer ${token}`,
-              },
-        }
+      const response = await axios.get(
+        `https://backend-repo-snowy-water-3246.fly.dev/students/course/${courseCode}`,
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log("Fetched students:", response.data);
       setStudents(response.data);
     } catch (error) {
-      console.error("Error fetching students:", error);
       setError("Failed to load students. Please check the course code or server status.");
     } finally {
       setLoading(false);
@@ -44,63 +37,64 @@ const Record = () => {
   };
 
   return (
-    <>
-      <div className="p-6">
-        <div className="flex flex-col md:flex-row items-center md:space-x-4 mb-4">
-          <input
-            type="text"
-            placeholder="Course Code"
-            className="flex-1 border border-gray-300 rounded px-3 py-2 outline-none mb-2 md:mb-0"
-            value={courseCode}
-            onChange={(e) => setCourseCode(e.target.value)}
-          />
+    <div className="p-4 sm:p-6 max-w-full">
+      {/* Input row */}
+      <div className="flex flex-col md:flex-row gap-3 mb-4 w-full">
+        <input
+          type="text"
+          placeholder="Course Code"
+          className="flex-grow border border-gray-300 rounded px-3 py-2 outline-none"
+          value={courseCode}
+          onChange={(e) => setCourseCode(e.target.value)}
+        />
+        <DatePicker
+          selected={selectedDate}
+          onChange={(date) => setSelectedDate(date)}
+          className="w-full md:w-40 border border-gray-300 rounded px-3 py-2 outline-none"
+          dateFormat="yyyy-MM-dd"
+        />
+        <button
+          className="w-full md:w-32 h-10 bg-cyan-500 text-white px-4 py-2 rounded hover:bg-green-600 hover:rounded-xl transition-all duration-300"
+          onClick={fetchStudents}
+        >
+          Fetch Students
+        </button>
+      </div>
 
-          {/* 🟡 Date Picker */}
-          <DatePicker
-            selected={selectedDate}
-            onChange={(date) => {setSelectedDate(date);
-                                console.log("Selected date:", date)
-            }}
-            className="border border-gray-300 rounded px-3 py-2 outline-none"
-            dateFormat="yyyy-MM-dd"
-          />
-
-          <button
-            className="bg-cyan-500 text-white px-4 py-2 rounded hover:bg-green-600 hover:rounded-xl ttransition-all duration-300 md:mt-0"
-            onClick={fetchStudents}
-          >
-            Fetch Students
-          </button>
+      {/* Loading spinner */}
+      {loading && (
+        <div className="flex justify-center my-4">
+          <ClipLoader color="#06b6d4" size={35} />
         </div>
+      )}
 
-        {loading && (
-          <div className="flex justify-center my-4">
-            <ClipLoader color="#06b6d4" size={35} />
-          </div>
-        )}
+      {/* Error message */}
+      {error && <p className="text-red-500">{error}</p>}
 
-        {error && <p className="text-red-500">{error}</p>}
-
-        <motion.div
-          className="p-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-          >
-            {students.length > 0 ? (
+      {/* Attendance table */}
+      <motion.div
+        className="p-4 sm:p-6 overflow-x-auto"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+      >
+        {students.length > 0 ? (
+          <div className="w-full overflow-x-auto">
+            <div className="max-w-screen-lg mx-auto">
               <AttendanceRecorder
                 students={students}
                 courseCode={courseCode}
-                selectedDate={selectedDate} // 🟡 Pass to AttendanceRecorder
+                selectedDate={selectedDate}
               />
-            ) : (
-              <p className="text-gray-500">
-                No students loaded yet. Please enter a course code and click "Fetch Students".
-              </p>
-            )}  
-        </motion.div>
-      </div>
-    </>
+            </div>
+          </div>
+        ) : (
+          <p className="text-gray-500 text-sm sm:text-base text-center">
+            No students loaded yet. Please enter a course code and click "Fetch Students".
+          </p>
+        )}
+      </motion.div>
+    </div>
   );
 };
 
