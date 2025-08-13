@@ -103,9 +103,9 @@ const Login = ({ setIsAuthenticated }) => {
           className="w-full mb-4 p-2 sm:p-3 border rounded text-sm sm:text-base"
         />
 
-        <div className="mb-4 flex justify-center">
+        {/* <div className="mb-4 flex justify-center">
           <ReCAPTCHA sitekey={sitekey} onChange={handleCaptchaChange} />
-        </div>
+        </div> */}
 
         <button
           type="submit"
