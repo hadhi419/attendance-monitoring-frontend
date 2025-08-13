@@ -10,8 +10,8 @@ const Login = ({ setIsAuthenticated }) => {
   const [captchaValue, setCaptchaValue] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const handleCaptchaChange = (value) => {
-    setCaptchaValue(value);
+  const handleCaptchaChange = (token) => {
+    setCaptchaValue(token); // ✅ store the token
   };
 
   const handleLogin = async (e) => {
@@ -25,13 +25,22 @@ const Login = ({ setIsAuthenticated }) => {
       return;
     }
 
+    if (!captchaValue) {
+      alert("Please complete the CAPTCHA");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const response = await fetch('https://backend-repo-snowy-water-3246.fly.dev/api/login', {
+      const response = await fetch('http://localhost:8080/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: email, password, captcha: captchaValue }),
+        body: JSON.stringify({
+          username: email,
+          password,
+          captcha: captchaValue // ✅ send the token
+        }),
       });
 
       if (response.ok) {
@@ -39,38 +48,27 @@ const Login = ({ setIsAuthenticated }) => {
         const token = data.token;
         localStorage.setItem('token', token);
 
-        const payload = parseJwt(token);
-        if (payload && payload.exp) {
-          localStorage.setItem('token_expiration', payload.exp * 1000);
+        // Optional: parse token expiration
+        if (token) {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          if (payload && payload.exp) {
+            localStorage.setItem('token_expiration', payload.exp * 1000);
+          }
         }
 
         setIsAuthenticated(true);
         navigate('/');
       } else {
-        alert("Login failed. Please try again.");
+        const errorData = await response.json();
+        alert(errorData.message || "Login failed. Please try again.");
       }
     } catch (error) {
       alert("Login failed: " + error.message);
     } finally {
       setLoading(false);
+      setCaptchaValue(null); // reset CAPTCHA after attempt
     }
   };
-
-  function parseJwt(token) {
-    try {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(
-        atob(base64)
-          .split('')
-          .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-          .join('')
-      );
-      return JSON.parse(jsonPayload);
-    } catch (e) {
-      return null;
-    }
-  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 relative px-4">
@@ -98,9 +96,12 @@ const Login = ({ setIsAuthenticated }) => {
           className="w-full mb-4 p-2 sm:p-3 border rounded text-sm sm:text-base"
         />
 
-        {/* <div className="mb-4 flex justify-center">
-          <ReCAPTCHA sitekey={sitekey} onChange={handleCaptchaChange} />
-        </div> */}
+        <div className="mb-4 flex justify-center">
+          <ReCAPTCHA
+            sitekey={sitekey}
+            onChange={handleCaptchaChange} // ✅ capture token
+          />
+        </div>
 
         <button
           type="submit"
