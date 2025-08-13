@@ -31,7 +31,7 @@ const Sidebar = ({ collapsed, setCollapsed, setIsAuthenticated }) => {
         ${collapsed ? 'w-14' : 'w-full md:w-64'}
         md:relative
         flex flex-col
-        top-18  md:top-0    
+        top-10  md:top-0    
         h-[calc(100vh-20px)] md:h-full  
       `}
     >
