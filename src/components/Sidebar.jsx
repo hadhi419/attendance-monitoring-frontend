@@ -23,6 +23,13 @@ const Sidebar = ({ collapsed, setCollapsed, setIsAuthenticated }) => {
     navigate('/login');
   };
 
+  // New helper: collapse sidebar on mobile
+  const handleLinkClick = () => {
+    if (window.innerWidth < 768) { // md breakpoint
+      setCollapsed(true);
+    }
+  };
+
   return (
     <aside
       className={`
@@ -31,15 +38,12 @@ const Sidebar = ({ collapsed, setCollapsed, setIsAuthenticated }) => {
         ${collapsed ? 'w-14' : 'w-full md:w-64'}
         md:relative
         flex flex-col
-        top-10  md:top-0    
-        h-[calc(100vh-20px)] md:h-full  
+        top-10 md:top-0
+        h-[calc(100vh-20px)] md:h-full
       `}
     >
-      {/* Header with toggle button visible only on md+ */}
       <div className="flex items-center justify-between mb-4 flex-shrink-0">
         {!collapsed && <h2 className="text-lg font-bold md:text-2xl">Admin</h2>}
-
-        {/* Toggle button for md+ screens */}
         <button
           onClick={() => setCollapsed(!collapsed)}
           className="text-white hidden md:inline-block"
@@ -49,10 +53,9 @@ const Sidebar = ({ collapsed, setCollapsed, setIsAuthenticated }) => {
         </button>
       </div>
 
-      {/* Navigation: show only if not collapsed */}
       {!collapsed && (
         <nav className="flex-1 overflow-y-auto flex flex-col gap-3 text-sm md:text-lg">
-          <Link to="/home" className="hover:underline">
+          <Link to="/home" className="hover:underline" onClick={handleLinkClick}>
             Home Page
           </Link>
 
@@ -66,13 +69,13 @@ const Sidebar = ({ collapsed, setCollapsed, setIsAuthenticated }) => {
             </button>
             {dashboardOpen && (
               <div className="ml-4 mt-2 flex flex-col gap-2 text-sm">
-                <Link to="/DashboardMenu/summary" className="hover:underline">
+                <Link to="/DashboardMenu/summary" className="hover:underline" onClick={handleLinkClick}>
                   Attendance Summary
                 </Link>
-                <Link to="/DashboardMenu/AttendanceByDate" className="hover:underline">
+                <Link to="/DashboardMenu/AttendanceByDate" className="hover:underline" onClick={handleLinkClick}>
                   Attendance by Date
                 </Link>
-                <Link to="/DashboardMenu/AttendanceByCourse" className="hover:underline">
+                <Link to="/DashboardMenu/AttendanceByCourse" className="hover:underline" onClick={handleLinkClick}>
                   Course Attendance
                 </Link>
               </div>
@@ -89,25 +92,24 @@ const Sidebar = ({ collapsed, setCollapsed, setIsAuthenticated }) => {
             </button>
             {adminOpen && (
               <div className="ml-4 mt-2 flex flex-col gap-2 text-sm">
-                <Link to="/AdminMenu/AddStudent" className="hover:underline">
+                <Link to="/AdminMenu/AddStudent" className="hover:underline" onClick={handleLinkClick}>
                   Add Student
                 </Link>
-                <Link to="/AdminMenu/AddAdmin" className="hover:underline">
+                <Link to="/AdminMenu/AddAdmin" className="hover:underline" onClick={handleLinkClick}>
                   Add Admin
                 </Link>
               </div>
             )}
           </div>
 
-          <Link to="/enroll" className="hover:underline">
+          <Link to="/enroll" className="hover:underline" onClick={handleLinkClick}>
             Enroll Students
           </Link>
 
-          <Link to="/record" className="hover:underline">
+          <Link to="/record" className="hover:underline" onClick={handleLinkClick}>
             Record
           </Link>
 
-          {/* Logout button */}
           <button
             onClick={handleLogout}
             className="mt-auto text-left text-blue-300 hover:underline"

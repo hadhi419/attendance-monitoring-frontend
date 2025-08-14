@@ -39,7 +39,7 @@ const Login = ({ setIsAuthenticated }) => {
         body: JSON.stringify({
           username: email,
           password,
-          captcha: captchaValue // ✅ send the token
+          captcha: captchaValue 
         }),
       });
 
