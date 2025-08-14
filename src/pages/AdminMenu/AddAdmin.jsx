@@ -9,6 +9,7 @@ const RegisterUser = () => {
   });
 
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false); // Loading state
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,14 +19,17 @@ const RegisterUser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
+    setLoading(true); // Start loading
 
     try {
       await axios.post('https://backend-repo-crimson-dream-9959.fly.dev/admin/addUser', user);
-      setMessage('✅ Student registered successfully.');
+      setMessage('✅ Admin registered successfully.');
       setUser({ email: '', password: '', role: 'student' });
     } catch (err) {
       setMessage('❌ Registration failed. Email might already exist.');
       console.error(err);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -33,8 +37,7 @@ const RegisterUser = () => {
     <div className="max-w-md mx-auto mt-10 bg-white p-6 rounded-lg shadow-lg
                     sm:max-w-lg sm:p-8
                     md:max-w-xl md:p-10
-                    lg:max-w-2xl
-                   ">
+                    lg:max-w-2xl">
       {/* Heading */}
       <h2 className="text-xl font-semibold mb-4 text-gray-700
                      sm:text-2xl md:text-3xl">
@@ -120,9 +123,33 @@ const RegisterUser = () => {
           type="submit"
           className="w-full bg-cyan-700 text-white py-2 rounded hover:bg-green-800 hover:rounded-xl
                      transition-all duration-300
-                     sm:py-3 sm:text-lg"
+                     sm:py-3 sm:text-lg flex justify-center items-center"
+          disabled={loading} // disable while loading
         >
-          Register Student
+          {loading ? (
+            // Simple spinner
+            <svg
+              className="animate-spin h-5 w-5 text-white mr-2"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+              ></path>
+            </svg>
+          ) : null}
+          {loading ? 'Registering...' : 'Register Student'}
         </button>
       </form>
     </div>
