@@ -25,7 +25,7 @@ const Record = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(
-        `https://backend-repo-snowy-water-3246.fly.dev/students/course/${courseCode}`,
+        `https://backend-repo-crimson-dream-9959.fly.dev/students/course/${courseCode}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setStudents(response.data);

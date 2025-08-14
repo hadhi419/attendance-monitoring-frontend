@@ -40,13 +40,13 @@ const HomePage = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 text-left md:text-center">
         {widgets.map((widget, index) => (
           <motion.div
             key={index}
             onClick={() => navigate(widget.route)}
             className={`cursor-pointer ${widget.color} text-white rounded-xl p-4 sm:p-6 shadow-lg hover:shadow-2xl transition-shadow duration-300
-              ${widget.isLarge ? 'sm:col-span-2 lg:col-span-3 text-center' : ''}`}
+              ${widget.isLarge ? 'sm:col-span-2 lg:col-span-3 ' : ''}`}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.97 }}
             initial={{ opacity: 0, y: 40 }}
