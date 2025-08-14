@@ -23,7 +23,7 @@ const Sidebar = ({ collapsed, setCollapsed, setIsAuthenticated }) => {
     navigate('/login');
   };
 
-  // New helper: collapse sidebar on mobile
+
   const handleLinkClick = () => {
     if (window.innerWidth < 768) { // md breakpoint
       setCollapsed(true);
@@ -35,7 +35,7 @@ const Sidebar = ({ collapsed, setCollapsed, setIsAuthenticated }) => {
       className={`
         bg-cyan-800 text-white p-4 transition-all duration-300
         fixed left-0 z-40
-        ${collapsed ? 'w-14' : 'w-full md:w-64'}
+        ${collapsed ? 'w-2 md:w-14' : 'w-full md:w-64'}
         md:relative
         flex flex-col
         top-10 md:top-0
