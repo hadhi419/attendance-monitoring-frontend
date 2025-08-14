@@ -53,7 +53,7 @@ const AppRouter = () => {
 
         {/* Protected Routes */}
         <Route element={<PrivateRoute isAuthenticated={isAuthenticated} />}>
-          <Route path="/" element={<MainLayout setIsAuthenticated={setIsAuthenticated}/>}>
+          <Route path="/" element={<MainLayout setIsAuthenticated={setIsAuthenticated} />}>
             <Route index element={<HomePage />} />
             <Route path="admin" element={<AdminPanel />} />
             <Route path="record" element={<Record />} />

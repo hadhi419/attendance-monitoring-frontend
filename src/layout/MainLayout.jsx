@@ -42,3 +42,4 @@ const MainLayout = ({ setIsAuthenticated }) => {
 };
 
 export default MainLayout;
+

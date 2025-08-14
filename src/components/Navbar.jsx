@@ -20,7 +20,7 @@ const Navbar = ({ setIsAuthenticated, onToggleSidebar, collapsed }) => {
           className="text-cyan-900 md:hidden mr-4"
           aria-label="Toggle sidebar"
         >
-          {collapsed ? <FiMenu size={20} /> : <FiX size={20}/> }
+          {collapsed ? <FiMenu size={20} /> : <FiX size={20} />}
         </button>
 
         <h1 className="text-100 font-bold text-cyan-900 md:text-2xl flex-grow">

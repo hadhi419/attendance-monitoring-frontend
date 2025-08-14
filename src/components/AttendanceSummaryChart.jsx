@@ -16,7 +16,7 @@ const AttendanceSummaryChart = ({ data }) => {
       },
     ],
   };
-  
+
   // Options for the chart
   const options = {
     responsive: true,
@@ -27,15 +27,15 @@ const AttendanceSummaryChart = ({ data }) => {
       tooltip: {
         enabled: true,
         callbacks: {
-        label: function (tooltipItem) {
-          const dataset = tooltipItem.dataset;
-          const total = dataset.data.reduce((sum, val) => sum + val, 0);
-          const value = dataset.data[tooltipItem.dataIndex];
-          const percentage = ((value / total) * 100).toFixed(1);
-          const label = tooltipItem.label || "";
-          return `${label}: ${value} (${percentage}%)`;
+          label: function (tooltipItem) {
+            const dataset = tooltipItem.dataset;
+            const total = dataset.data.reduce((sum, val) => sum + val, 0);
+            const value = dataset.data[tooltipItem.dataIndex];
+            const percentage = ((value / total) * 100).toFixed(1);
+            const label = tooltipItem.label || "";
+            return `${label}: ${value} (${percentage}%)`;
+          },
         },
-      },
       },
     },
   };
@@ -43,15 +43,15 @@ const AttendanceSummaryChart = ({ data }) => {
 
   return (
     <>
-    <div className=" border-4  p-4 flex flex-col w-72 h-78  rounded-3xl items-center justify-center">
-          <h2 className="text-black">{data.course_code}</h2>
-  <div className="p-4 border rounded-2xl shadow-md bg-white w-72 h-80 max-w-md">
-    <Pie data={chartData} options={options} />
-    <p className="mt-2 text-sm text-gray-500">
-      Total Sessions: {data.totalSessions} 
-    </p>
-  </div>
-  </div>
+      <div className=" border-4  p-4 flex flex-col w-72 h-78  rounded-3xl items-center justify-center">
+        <h2 className="text-black">{data.course_code}</h2>
+        <div className="p-4 border rounded-2xl shadow-md bg-white w-72 h-80 max-w-md">
+          <Pie data={chartData} options={options} />
+          <p className="mt-2 text-sm text-gray-500">
+            Total Sessions: {data.totalSessions}
+          </p>
+        </div>
+      </div>
 
 
     </>

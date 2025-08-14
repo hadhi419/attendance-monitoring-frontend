@@ -12,7 +12,7 @@ const ConfirmModal = ({ message, onConfirm, onCancel }) => {
 
     setIsVisible(false);
 
-    setTimeout(onCancel, 300); 
+    setTimeout(onCancel, 300);
   };
 
   const handleConfirm = () => {

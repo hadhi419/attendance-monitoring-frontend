@@ -20,7 +20,7 @@ const RegisterUser = () => {
     setMessage('');
 
     try {
-      await axios.post('https://backend-repo-silent-butterfly-7738.fly.dev/admin/addUser', user);
+      await axios.post('https://backend-repo-crimson-dream-9959.fly.dev/admin/addUser', user);
       setMessage('✅ Student registered successfully.');
       setUser({ email: '', password: '', role: 'student' });
     } catch (err) {
