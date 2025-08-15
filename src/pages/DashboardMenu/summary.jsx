@@ -34,7 +34,7 @@ const Dashboard = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(
-        `https://backend-repo-crimson-dream-9959.fly.dev/courses/getCoursesByStudentId/${registrationNumber}`,
+        `https://backend-repo-rough-snowflake-31.fly.dev/courses/getCoursesByStudentId/${registrationNumber}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setCourses(response.data);
@@ -53,7 +53,7 @@ const Dashboard = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(
-        `https://backend-repo-crimson-dream-9959.fly.dev/attendance/student/${registrationNumber}/course/${courseCode}`,
+        `https://backend-repo-rough-snowflake-31.fly.dev/attendance/student/${registrationNumber}/course/${courseCode}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setResult(response.data);

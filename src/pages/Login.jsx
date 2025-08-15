@@ -33,7 +33,7 @@ const Login = ({ setIsAuthenticated }) => {
     setLoading(true);
 
     try {
-      const response = await fetch('https://backend-repo-crimson-dream-9959.fly.dev/api/login', {
+      const response = await fetch('https://backend-repo-rough-snowflake-31.fly.dev/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

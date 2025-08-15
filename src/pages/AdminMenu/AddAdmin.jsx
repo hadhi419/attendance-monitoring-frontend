@@ -22,7 +22,7 @@ const RegisterUser = () => {
     setLoading(true); // Start loading
 
     try {
-      await axios.post('https://backend-repo-crimson-dream-9959.fly.dev/admin/addUser', user);
+      await axios.post('https://backend-repo-rough-snowflake-31.fly.dev/admin/addUser', user);
       setMessage('✅ Admin registered successfully.');
       setUser({ email: '', password: '', role: 'student' });
     } catch (err) {
